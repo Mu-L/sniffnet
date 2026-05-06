@@ -145,7 +145,7 @@ pub fn clip_text(text: &str, max_chars: usize) -> String {
 
     let suspensions = if tot_len > max_chars { "…" } else { "" };
     let slice = if tot_len > max_chars {
-        &chars[..slice_len - 2]
+        &chars[..slice_len.saturating_sub(2)]
     } else {
         &chars[..slice_len]
     }

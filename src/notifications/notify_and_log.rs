@@ -43,7 +43,7 @@ pub fn notify_and_log(
             let notification = LoggedNotification::DataThresholdExceeded(DataThresholdExceeded {
                 id: logged_notifications.tot(),
                 data_repr,
-                threshold: notifications.data_notification.previous_threshold,
+                threshold,
                 data_info,
                 timestamp: get_formatted_timestamp(timestamp),
                 is_expanded: false,

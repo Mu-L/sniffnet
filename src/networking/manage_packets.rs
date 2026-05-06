@@ -124,7 +124,7 @@ fn analyze_network_header(
         Some(NetHeaders::Ipv6(ipv6header, _)) => {
             *address1 = IpAddr::from(ipv6header.source);
             *address2 = IpAddr::from(ipv6header.destination);
-            *exchanged_bytes += u128::from(40 + ipv6header.payload_length);
+            *exchanged_bytes += u128::from(ipv6header.payload_length) + 40;
             true
         }
         Some(NetHeaders::Arp(arp_packet)) => {

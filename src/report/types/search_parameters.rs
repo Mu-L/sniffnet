@@ -236,11 +236,7 @@ impl FilterInputType {
         result
     }
 
-    pub fn new_search(
-        self,
-        search_params: &SearchParameters,
-        new_value: String,
-    ) -> SearchParameters {
+    pub fn new_search(self, search_params: &SearchParameters, new_value: &str) -> SearchParameters {
         let mut result = search_params.clone();
         let trimmed = new_value.trim().to_string();
         match self {
@@ -252,7 +248,7 @@ impl FilterInputType {
             FilterInputType::Service => result.service = trimmed,
             FilterInputType::Domain => result.domain = trimmed,
             FilterInputType::Country => result.country = trimmed,
-            FilterInputType::AsName => result.as_name = new_value,
+            FilterInputType::AsName => result.as_name = trimmed,
             FilterInputType::Program => result.program = trimmed,
         }
         result

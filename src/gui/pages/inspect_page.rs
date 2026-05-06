@@ -35,6 +35,7 @@ use crate::translations::translations_2::{
     only_show_favorites_translation, showing_results_translation,
 };
 use crate::translations::translations_5::{only_show_blacklisted_translation, program_translation};
+use crate::utils::formatted_strings::clip_text;
 use crate::utils::types::icon::Icon;
 use crate::{Language, RunningPage, Sniffer, StyleType};
 
@@ -261,16 +262,9 @@ fn row_report_entry<'a>(
         let max_chars = report_col.get_max_chars(None);
         let col_value = report_col.get_value(key, val, data_repr);
         ret_val = ret_val.push(
-            Container::new(
-                Text::new(if col_value.len() <= max_chars {
-                    col_value
-                } else {
-                    [&col_value[..max_chars - 2], "…"].concat()
-                })
-                .class(text_type),
-            )
-            .align_x(Alignment::Center)
-            .width(report_col.get_width()),
+            Container::new(Text::new(clip_text(&col_value, max_chars)).class(text_type))
+                .align_x(Alignment::Center)
+                .width(report_col.get_width()),
         );
     }
     ret_val
@@ -412,7 +406,7 @@ fn filter_input<'a>(
 
     let mut input = TextInput::new("", filter_value)
         .on_input(move |new_value| {
-            Message::Search(filter_input_type.new_search(&search_params, new_value))
+            Message::Search(filter_input_type.new_search(&search_params, &new_value))
         })
         .padding([2, 5])
         .size(FONT_SIZE_FOOTER)
@@ -462,8 +456,9 @@ fn filter_combobox(
 
     let button_clear = button_clear_filter(filter_input_type.clear_search(&search_params));
 
-    let update_fn =
-        move |new_value| Message::Search(filter_input_type.new_search(&search_params, new_value));
+    let update_fn = move |new_value: String| {
+        Message::Search(filter_input_type.new_search(&search_params, &new_value))
+    };
 
     let mut combobox = ComboBox::new(combo_box_state, "", Some(&filter_value), update_fn.clone())
         .on_input(update_fn)
