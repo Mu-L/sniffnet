@@ -19,13 +19,13 @@ impl IpBlacklist {
         let mut ips = HashSet::new();
         let mut networks = Vec::new();
         for line in buf.lines() {
-            let Some(line) = clean_blacklist_line(line) else {
+            let Some(first) = line.split_whitespace().next() else {
                 continue;
             };
 
-            if let Ok(ip) = line.parse::<IpAddr>() {
+            if let Ok(ip) = first.parse::<IpAddr>() {
                 ips.insert(ip);
-            } else if let Ok(network) = line.parse::<IpNet>() {
+            } else if let Ok(network) = first.parse::<IpNet>() {
                 networks.push(network);
             }
         }
@@ -51,20 +51,6 @@ impl IpBlacklist {
     pub fn start_loading(&mut self) {
         self.is_loading = true;
     }
-}
-
-fn clean_blacklist_line(line: &str) -> Option<&str> {
-    let line = line.trim();
-
-    if line.is_empty() || line.starts_with('#') || line.starts_with(';') {
-        return None;
-    }
-
-    let line = line.split(';').next().unwrap_or(line);
-    let line = line.split('#').next().unwrap_or(line);
-    let line = line.trim();
-
-    if line.is_empty() { None } else { Some(line) }
 }
 
 #[cfg(test)]
