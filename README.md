@@ -116,7 +116,7 @@ Not what you're looking for? Check out [alternative installation methods](https:
 - 📌 keep an eye on your network even when the application is **minimized**
 - ️🔎 search and **inspect** each of your network connections in real time
 - 🔉 set custom **notifications** to inform you when defined network events occur
-- 🚫 import custom **IP blacklists** with exact IPs or CIDR ranges to highlight potentially dangerous connections
+- 🚫 import custom **IP blacklists** to highlight potentially dangerous connections
 - 🎨 choose the **style** that fits you the most, including custom themes support
 - ...and more!
 
